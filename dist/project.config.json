@@ -1,0 +1,151 @@
+{
+	"description": "项目配置文件",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": true,
+		"preloadBackgroundData": false,
+		"minified": true,
+		"newFeature": true,
+		"coverView": true,
+		"autoAudits": false,
+		"showShadowRootInWxmlPanel": true,
+		"scopeDataCheck": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		},
+		"useCompilerModule": true,
+		"userConfirmedUseCompilerModuleSwitch": false
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.11.0",
+	"appid": "wx89e3a2da39a7bb4e",
+	"projectname": "dist",
+	"cloudfunctionTemplateRoot": "",
+	"watchOptions": {
+		"ignore": []
+	},
+	"debugOptions": {
+		"hidedInDevtools": []
+	},
+	"scripts": {},
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 8,
+			"list": [
+				{
+					"id": -1,
+					"name": "pages/login",
+					"pathName": "pages/login",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/webView",
+					"pathName": "pages/webView",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/onload",
+					"pathName": "pages/onload",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/bankCards",
+					"pathName": "pages/bankCards",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/withdrawMoney",
+					"pathName": "pages/withdrawMoney",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/addBankCards",
+					"pathName": "pages/addBankCards",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/insuranceOrder",
+					"pathName": "pages/insuranceOrder",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/webView",
+					"pathName": "pages/webView",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 8,
+					"name": "pages/webView",
+					"pathName": "pages/webView",
+					"query": "productCode=1AN/YAZHJTYWX/001",
+					"scene": null
+				},
+				{
+					"id": 9,
+					"name": "pages/webView",
+					"pathName": "pages/webView",
+					"query": "from=share&shareToken=%3Fdelegated%3DTAIRAN.1363555%26ticket%3DCSMD%2520VEFJUkFOOmY0NjViZjJmZThlYWYzNjQ5NDc4MGZjNWIwODAzZDUwOjE1ODk0NTkyNjM1MjE%253D&productCode=1AN/YAZHJTYWX/001",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/my",
+					"pathName": "pages/my",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/propertyDetail",
+					"pathName": "pages/propertyDetail",
+					"scene": null
+				}
+			]
+		}
+	}
+}

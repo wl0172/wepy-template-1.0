@@ -1,0 +1,32 @@
+page {
+  height: 100%;
+}
+.body {
+  height: 100%;
+  background: #fff;
+}
+.content {
+  padding: 0 50rpx;
+  font-size: 26rpx;
+  overflow: auto;
+  height: 100%;
+  background: #ffffff;
+}
+.text-center {
+  font-size: 40rpx;
+  font-weight: 900;
+  text-align: center;
+}
+.text-conter-title {
+  font-size: 30rpx;
+  font-weight: 900;
+  text-align: center;
+  margin: 20rpx 0;
+}
+.marg {
+  margin: 30rpx 0 0 0;
+}
+.alin-left {
+  text-align: left;
+  font-weight: 900;
+}

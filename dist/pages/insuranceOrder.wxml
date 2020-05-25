@@ -1,0 +1,13 @@
+
+  <view class="body">
+
+    <view class="item-label-view"  wx:for="{{performanceList}}" wx:key="item">
+      <view class="item-left-view">
+        <view>{{item.coverageName}}</view>
+        <view style="color:#C2C2C2;font-size:28rpx;margin-top:10rpx;">{{item.time}}</view>
+      </view>
+      <view class="item-right-view" wx:if="{{item.policyStatus==1}}">待支付</view>
+       <view class="item-right-view" wx:if="{{item.policyStatus===2}}">已出单</view>
+    </view>
+
+  </view>

@@ -1,0 +1,103 @@
+
+  <view class="body">
+    <view class="default-row-label-view">
+      <view class="inner-row-label-view border">
+        <view class="inner-row-left-view">省/直辖市</view>
+         <view class="inner-row-right-view">
+           <picker bindchange="provincePickerChange" value="{{provinceIndex}}" range-key="regionName" range="{{provinceList}}">
+              <view  wx:if="{{!provinceIndex}}" class="picker-label-none-view">
+                请选择开户行所在省
+              </view>
+              <view class="picker-label-view"  wx:else>
+                {{provinceList[provinceIndex].regionName}}
+              </view>
+            </picker>
+         </view>
+      </view>
+    </view>
+
+    <view class="default-row-label-view">
+      <view class="inner-row-label-view border">
+        <view class="inner-row-left-view">市</view>
+        <view class="inner-row-right-view">
+           <picker bindchange="cityPickerChange" value="{{cityIndex}}" range-key="regionName" range="{{cityList}}">
+              <view wx:if="{{!cityIndex}}" class="picker-label-none-view">
+                请选择开户行所在市
+              </view>
+              <view class="picker-label-view" wx:else>
+                {{cityList[cityIndex].regionName}}
+              </view>
+            </picker>
+         </view>
+      </view>
+    </view>
+
+    <view class="default-row-label-view">
+      <view class="inner-row-label-view border">
+        <view class="inner-row-left-view">开户银行</view>
+        <view class="inner-row-right-view">
+           <picker bindchange="bankPickerChange" value="{{bankIndex}}" range-key="bankName" range="{{bankList}}">
+              <view wx:if="{{!bankIndex}}" class="picker-label-none-view">
+                请选择银行
+              </view>
+              <view class="picker-label-view" wx:else>
+                {{bankList[bankIndex].bankName}}
+              </view>
+            </picker>
+         </view>
+      </view>
+    </view>
+
+    <view class="default-row-label-view">
+      <view class="inner-row-label-view border">
+        <view class="inner-row-left-view">开户分/支行</view>
+        <view class="inner-row-right-view">
+          <input class="inner-input" confirm-type="done" placeholder-class="placeholder-inner-input" placeholder="请输入开户分/支行" bindinput="bindBankNameInput" value="{{queryList.subBankName}}"/>
+         </view>
+      </view>
+    </view>
+
+    <view class="default-row-label-view">
+      <view class="inner-row-label-view border">
+        <view class="inner-row-left-view">储蓄卡卡号</view>
+        <view class="inner-row-right-view">
+          <input class="inner-input" type="number" confirm-type="done" placeholder-class="placeholder-inner-input" placeholder="请输入储蓄卡卡号" bindinput="bindBankCodeInput" value="{{queryList.bankCardNo}}"/>
+         </view>
+      </view>
+    </view>
+
+    <view class="default-row-label-view">
+      <view class="inner-row-label-view border">
+        <view class="inner-row-left-view">持卡人姓名</view>
+        <view class="inner-row-right-view">
+          <input class="inner-input" confirm-type="done" placeholder-class="placeholder-inner-input" placeholder="请输入持卡人姓名" bindinput="bindNameInput" value="{{queryList.cardOwnerName}}"/>
+         </view>
+      </view>
+    </view>
+
+    <view class="default-row-label-view">
+      <view class="inner-row-label-view border">
+        <view class="inner-row-left-view">手机号码</view>
+        <view class="inner-row-right-view">
+          <input class="inner-input" type="number" confirm-type="done" placeholder-class="placeholder-inner-input" placeholder="请输入手机号码" bindinput="bindPhoneInput" value="{{queryList.mobilePhone}}"/>
+         </view>
+      </view>
+    </view>
+
+    <view class="default-row-label-view">
+      <view class="inner-row-label-view border">
+        <view class="inner-row-left-view">验证码</view>
+           <view class="inner-row-right-view">
+            <view class="inner-row-right-small-view">
+              <input class="inner-input" type="number" confirm-type="done" placeholder-class="placeholder-inner-input" placeholder="请输入验证码" bindinput="bindCodeInput" value="{{queryList.verificationCode}}"/>
+            </view>
+              <view wx:if="{{!isGetting}}" class="code-text-view" bindtap="handleGetCode">获取验证码</view>
+                <view wx:if="{{isGetting}}" class="code-text-change-view">
+                  {{count}}秒后重新获取
+              </view>
+           </view>
+      </view>
+    </view>
+
+    <view class="defualt-row-submit-button-view" bindtap="handleAddCards">添加银行卡</view>
+  </view>

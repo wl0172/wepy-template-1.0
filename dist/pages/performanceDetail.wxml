@@ -1,0 +1,39 @@
+
+  <view class="body">
+      <view class="label-select-row-view">
+      <view class="row-select-item-text-view">筛选</view>
+      <picker mode="date" fields="month" value="{{date}}" bindchange="handleDateChange">
+        <view class="row-select-item-label-text-view">
+          <view class="row-select-item-time-text-view">
+           {{date}}
+          </view>
+          <view class="row-select-item-img-view">
+            <image src="../images/calendar-icon.png" style="width:100%;height:100%;"/>
+          </view>
+        </view>
+      </picker>
+    </view>
+
+
+    <block wx:for="{{performanceList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+      <view class="label-date-row-view">
+        <view class="row-date-item-text-view">{{item.time}}</view>
+        <view class="row-date-item-price-view">{{item.agentName}}</view>
+      </view>
+
+      <view class="label-vs-row-view">
+        <view class="default-row-label-vs-view">
+          <view>
+            <view style="font-size:32rpx;font-weight:600;">{{item.realPerformance}}</view>
+            <view style="font-size:20rpx">当月持有业绩（元）</view>
+          </view>
+          <view style="font-size:48rpx;font-family:PangMenZhengDao;">VS</view>
+          <view>
+            <view style="font-size:32rpx;font-weight:600;">{{item.targetPerformance}}</view>
+            <view style="font-size:20rpx">当月业绩目标值（元）</view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+  </view>

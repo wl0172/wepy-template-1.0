@@ -1,0 +1,81 @@
+
+  <view class="body">
+    <view class="defualt-row-label-view">
+      <view class="defualt-inner-row-label-view" bindtap="handleToBankCards">
+        <view class="">
+          <view class="inner-bank-name-view"  wx:if="{{bankInfo.bankName}}">
+            {{bankInfo.bankName}}
+          </view>
+          <view class="inner-bank-name-view"  wx:if="{{!bankInfo.bankName}}">
+            银行名称
+          </view>
+          <view class="inner-bank-sub-view" wx:if="{{bankInfo.bankCardNo}}">
+            尾号{{bankInfo.bankCardNo}}储蓄卡
+          </view>
+          <view class="inner-bank-sub-view" wx:if="{{!bankInfo.bankCardNo}}">
+            暂无银行卡
+          </view>
+        </view>
+        <view class="default-right-icon-view">
+          <image style="width:100%;height:100%;" src="../images/arrow-right-icon.png"/>
+        </view>
+      </view>
+    </view>
+
+    <view class="defualt-row-label1-view">
+      <view class="defualt-inner-row-label-view">
+        <view class="inner-input-view">
+          <view style="font-size:70rpx;width:60rpx;">¥</view>
+           <view class="input-out-view">
+            <input class="inner-input" type="digit" placeholder-class="placeholder-inner-input" placeholder="请输入提现金额" bindblur="blurMoneyInput" bindinput="bindMoneyInput" value="{{queryList.withdrawMoney}}"/>
+           </view>
+        </view>
+         <view class="inner-text-view" bindtap="handleWithdrawMoneyAll">
+          全部提现
+        </view>
+      </view>
+    </view>
+
+    <view class="defualt-row-label-view">
+      <view class="text-inner-row-label-view" wx:if="{{!isWarn}}">
+        可提现余额：{{getCashAssetFormat}}元
+      </view>
+      <view class="warn-inner-row-label-view" wx:if="{{isWarn}}">
+        超出可提现余额
+      </view>
+    </view>
+
+    <view class="default-label-white-view">
+      <view class="bottom-submit-button-view" style="background:{{!isOption?'#CCCCCC;':'#ED4D58;'}}" bindtap="handleSubmit">确认转入</view>
+
+      <view class="warn-label-view">
+        <view style="color:#333;font-size:28rpx;">提现规则</view>
+        <view>1、如果账户可提现余额大于等于提现金额则可以进行提现操作，否则不允操作，余额符合条件则反馈给用户进行确认提现。</view>
+        <view>2、输入金额超过账户余额，则不允操作。</view>
+        <view>3、用户保费收益提现金额的10%，作为次年保险继续率考核续保金。续保金。</view>
+        <view>4、提现每笔扣除0.7%手续费。</view>
+      </view>
+    </view>
+
+    <view wx:if="{{warnModal}}" class="modal-mask-dialog-input-view" catchtouchmove="preventTouchMove"/>
+    <view wx:if="{{warnModal}}" class="fixed-view-dialog-input-view" catchtouchmove="preventTouchMove">
+      <view class="dialog-text-label-view">
+        <view class="dialog-text-flex-view" style="margin-top:40rpx;">
+          <view>提现金额</view>
+          <view>￥{{withdrawInfo.drawAmount}}</view>
+        </view>
+        <view class="dialog-text-flex-view">
+          <view>手续费</view>
+          <view>￥{{withdrawInfo.individualTax}}</view>
+        </view>
+        <view class="dialog-text-flex-view">
+          <view>到账金额</view>
+          <view style="color:#ED4D58;">￥{{withdrawInfo.receiveAmount}}</view>
+        </view>
+      </view>
+      <view class="dialog-bottom-button-label-view">
+        <view class="dialog-button-left-view" bindtap="handleCloseDialog">取消</view>
+        <view class="dialog-button-right-view" bindtap="handleWithdrawSubmit">确认</view>
+      </view>
+    </view>
+  </view>

@@ -1,0 +1,77 @@
+
+  <view class="body">
+
+    <view class="label-select-row-view">
+      <view class="row-select-item-text-view" bindtap="handleSelect">筛选-{{statusLabel}}</view>
+      <picker mode="date" fields="month" value="{{date}}" bindchange="handleDateChange">
+        <view class="row-select-item-label-text-view">
+          <view class="row-select-item-time-text-view">
+           {{date}}
+          </view>
+          <view class="row-select-item-img-view">
+            <image src="../images/calendar-icon.png" style="width:100%;height:100%;"/>
+          </view>
+        </view>
+      </picker>
+    </view>
+
+ <scroll-view style="height:{{scrollHeight}}rpx;width:100%;" scroll-y lower-threshold="0" bindscrolltolower="scrolltolowerFollow">
+    <view  wx:for="{{anticipatedList}}" wx:key="item">
+      <view class="label-default-row-view">
+        <view class="label-inner-default-row-view border">
+          <view class="label-inner-row1-view">
+            <view>{{item.type==1?'提现':item.detailName}}</view>
+            <view>{{item.type==1?item.withdrawDepositMoney:item.commission}}</view>
+          </view>
+          <view class="label-inner-row2-view">
+            <view style="color:#979797;">{{item.time}}</view>
+            <view style="color:#ED4D58;display:flex;">
+              <view class="inner-button-label-view" wx:if="{{item.withdrawDepositStatus==3||item.withdrawDepositStatus==5}}" bindtap="handleReason" data-wpyhandlereason-a="{{item}}">查看原因</view>
+              <view wx:if="{{item.type==1}}">
+                <view wx:if="{{item.withdrawDepositStatus==1}}">待审核</view>
+                <view wx:if="{{item.withdrawDepositStatus==2}}">审核成功待打款</view>
+                <view wx:if="{{item.withdrawDepositStatus==3}}">审核失败</view>
+                <view wx:if="{{item.withdrawDepositStatus==4}}" bindtap="handleSuccessInfo" data-wpyhandlesuccessinfo-a="{{item}}">打款成功</view>
+                <view wx:if="{{item.withdrawDepositStatus==5}}">打款失败</view>
+              </view>
+              <view wx:if="{{item.type==2}}">{{item.premium}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+   </scroll-view>
+   <view  wx:if="{{warnModal}}" class="modal-mask-dialog-input-view" catchtouchmove="preventTouchMove"/>
+    <view wx:if="{{warnModal}}" class="fixed-view-dialog-input-view" catchtouchmove="preventTouchMove">
+      <view class="dialog-text-label-view">
+        <view class="dialog-text-flex-view" style="margin-top:40rpx;">
+          <view>提现金额</view>
+          <view>￥</view>
+        </view>
+        <view class="dialog-text-flex-view">
+          <view>手续费</view>
+          <view>￥10.00</view>
+        </view>
+        <view class="dialog-text-flex-view">
+          <view>提现金额</view>
+          <view style="color:#ED4D58;">￥10.00</view>
+        </view>
+      </view>
+      <view class="dialog-bottom-button-label-view">
+        <view class="dialog-button-right-view" bindtap="handleCloseDialog">确认</view>
+      </view>
+    </view>
+  </view>
+
+   <view class="ljw-popup"  wx:if="{{reasonDialog}}">
+      <view class="ljw-popup-conter">
+        <view class="ljw-popup-text">{{resonText}}</view>
+        <view class="ljw-popup-button" bindtap="handleClose">确定</view>
+      </view>
+    </view>
+
+      <view class="position-img-view"  wx:if="{{detailList.length==0}}">
+      <image src="../images/no-data-icon.png" style="width:100%;height:100%;"/>
+    </view>

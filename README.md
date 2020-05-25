@@ -171,3 +171,6 @@ export default {
   }
 }
 ```
+/dist
+node_modules
+package-lock.json

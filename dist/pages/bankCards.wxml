@@ -1,0 +1,21 @@
+
+  <view class="body">
+    <block wx:for="{{bankList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+      <view class="cards-label-view" bindtap="handleSelectedBank" data-wpyhandleselectedbank-a="{{item}}">
+        <image src="../images/bank-cards-background.png" style="width:100%;height:100%;"/>
+        <view class="abs-name-label-view">{{item.bankName}}</view>
+        <view class="abs-options-label-view" catchtap="handleRemoveBank" data-wpyhandleremovebank-a="{{index}}" data-wpyhandleremovebank-b="{{item}}">解除绑定 ></view>
+        <view class="abs-cards-label-view">
+          <view style="font-size:48rpx;">****  ****  ****</view>
+          <view style="font-size:34rpx;margin-left:20rpx;">{{item.bankCardNo}}</view>
+        </view>
+      </view>
+    </block>
+
+    <view class="cards-add-label-view"  wx:if="{{bankList.length==0}}" bindtap="handleAddCards">
+      <view class="add-icon-view">
+        <image src="../images/add-icon.png" style="width:100%;height:100%;"/>
+      </view>
+      <view style="margin-left:20rpx;">添加银行卡</view>
+    </view>
+  </view>

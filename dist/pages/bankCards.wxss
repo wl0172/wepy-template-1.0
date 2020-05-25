@@ -1,0 +1,55 @@
+.cards-label-view {
+  position: relative;
+  width: 690rpx;
+  height: 272rpx;
+  margin: 30rpx auto 20rpx auto;
+  color: #ffffff;
+}
+.abs-name-label-view {
+  position: absolute;
+  top: 42rpx;
+  left: 100rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  font-size: 30rpx;
+  color: #ffffff;
+}
+.abs-options-label-view {
+  position: absolute;
+  top: 100rpx;
+  right: 60rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  font-size: 30rpx;
+  color: #ffffff;
+}
+.abs-cards-label-view {
+  position: absolute;
+  bottom: 70rpx;
+  left: 40rpx;
+  height: 44rpx;
+  font-size: 30rpx;
+  color: #ffffff;
+  display: flex;
+}
+.cards-add-label-view {
+  position: relative;
+  width: 690rpx;
+  height: 120rpx;
+  margin: 30rpx auto 20rpx auto;
+  color: #ffffff;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  color: #333333;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+.cards-add-label-view:active {
+  opacity: 0.7;
+}
+.add-icon-view {
+  width: 66rpx;
+  height: 66rpx;
+  margin-left: 20rpx;
+}
