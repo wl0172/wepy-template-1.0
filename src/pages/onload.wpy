@@ -1,0 +1,32 @@
+<style lang="less">
+
+</style>
+
+<template>
+  <view class="body">
+
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class Onload extends wepy.page {
+  config = {
+    navigationBarTitleText: 'wepy框架'
+  };
+  components = {};
+  data = {
+
+  };
+  computed = {};
+  watch = {};
+  onLoad(option) {}
+  onShow() {
+
+  };
+  onHide() {}
+  onUnload() {}
+
+
+}
+</script>

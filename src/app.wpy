@@ -1,0 +1,70 @@
+<style lang="less">
+page {
+  background-color: #f5f5f5;
+}
+.body {
+  height: 100%;
+  font-family: '\5FAE\8F6F\96C5\9ED1', arial;
+  overflow: hidden;
+}
+</style>
+
+<script>
+import wepy from 'wepy';
+import 'wepy-async-function';
+import config from './config/index.js';
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/onload',
+      'pages/my',
+      'pages/login',
+
+    ],
+    window: {
+      backgroundTextStyle: 'dark',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: '小程序',
+      navigationBarTextStyle: 'black',
+      backgroundColor: '#F6F6F6'
+    },
+    tabBar: {
+      color: '#494949',
+      selectedColor: '#ED4D58',
+      borderStyle: 'white',
+      backgroundColor: '#ffffff',
+      list: [
+        {
+          pagePath: 'pages/onload',
+          iconPath: 'images/index-icon.png',
+          selectedIconPath: 'images/index-selected-icon.png',
+          text: '首页'
+        },
+        {
+          pagePath: 'pages/my',
+          iconPath: 'images/my-icon.png',
+          selectedIconPath: 'images/my-selected-icon.png',
+          text: '我的'
+        }
+      ]
+    },
+    networkTimeout: {
+      request: 30000,
+      downloadFile: 30000
+    }
+  };
+  globalData = {
+    userInfo: null
+  };
+  constructor() {
+    super();
+    this.use('requestfix');
+    this.use('promisify');
+  }
+  onLaunch() {
+    console.info('小程序已启动！');
+  }
+  onHide() {}
+  $config = config;
+}
+</script>

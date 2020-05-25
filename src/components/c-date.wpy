@@ -1,0 +1,635 @@
+<style lang="less">
+.com-body {
+  background-color: #ffffff;
+}
+.top-title-view {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  color: #333333;
+  font-size: 34rpx;
+  text-align: center;
+}
+.top-days-label-view {
+  display: grid;
+  grid-template-columns: repeat(7, 14.28%);
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background-color: #fbfbfb;
+  font-size: 30rpx;
+  view:first-child {
+    color: #ff6600;
+  }
+  view:last-child {
+    color: #ff6600;
+  }
+}
+.date-picker-view {
+  background-color: #ffffff;
+}
+.date-label-view {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 32rpx;
+  color: #333333;
+  text-align: center;
+}
+.date-grid-view {
+  display: grid;
+  grid-template-columns: repeat(7, 14.28%);
+  font-size: 28rpx;
+  color: #666666;
+}
+.grid-item-view {
+  height: 100rpx;
+  text-align: center;
+  position: relative;
+}
+.inner-item-label-view {
+  height: 50rpx;
+  line-height: 95rpx;
+}
+.inner-item-warn-view {
+  height: 30rpx;
+  line-height: 58rpx;
+  font-size: 18rpx;
+  color: #ffffff;
+}
+.inner-item-abs-tag-view {
+  position: absolute;
+  height: 60rpx;
+  width: 100%;
+  top: -60rpx;
+  left: 0;
+}
+.item-tag-view {
+  position: relative;
+  width: 90rpx;
+  height: 50rpx;
+  font-size: 24rpx;
+  margin: 0px auto;
+  background-color: #000000;
+  border-radius: 10rpx;
+  opacity: 0.8;
+  color: #fff;
+}
+.item-tag-triangle-view {
+  position: absolute;
+  bottom: -10rpx;
+  left: 32rpx;
+  width: 0;
+  height: 0;
+  border-left: 18rpx solid transparent;
+  border-right: 18rpx solid transparent;
+  border-top: 18rpx solid #000000;
+}
+.color {
+  color: #ff6600;
+}
+.disabled-color {
+  color: #cccccc;
+}
+.border {
+  border-bottom: 2rpx solid #e5e5e5;
+}
+.hover-class {
+  background-color: #f5f5f5;
+  border-radius: 12rpx;
+}
+.first-checked {
+  background: linear-gradient(
+    90deg,
+    rgba(250, 140, 29, 1) 0%,
+    rgba(252, 173, 62, 1) 100%
+  );
+  color: #fff;
+  border-top-left-radius: 12rpx;
+  border-bottom-left-radius: 12rpx;
+}
+.mid-checked {
+  background-color: #f5f5f5;
+}
+.second-checked {
+  background: linear-gradient(
+    90deg,
+    rgba(250, 140, 29, 1) 0%,
+    rgba(252, 173, 62, 1) 100%
+  );
+  color: #fff;
+  border-top-right-radius: 12rpx;
+  border-bottom-right-radius: 12rpx;
+}
+</style>
+
+<template lang="wxml">
+  <view class="com-body">
+    <view class="top-title-view">选择日期</view>
+    <view class="top-days-label-view">
+      <view>日</view>
+      <view>一</view>
+      <view>二</view>
+      <view>三</view>
+      <view>四</view>
+      <view>五</view>
+      <view>六</view>
+    </view>
+    <view class="date-picker-view">
+      <repeat for="{{dateArray}}" key="index">
+        <view class="date-label-view">{{item.year+'年'+item.month+'月'}}</view>
+        <view class="date-grid-view  {{index!==dateArray.length-1?'border':''}}">
+          <repeat for="{{item.dateArray}}" key="_index" index="_index" item="_item">
+            <!-- 显示禁用日期 -->
+            <view wx:if="{{_item.show&&_item.disabled}}" class="grid-item-view disabled-color" style="{{_index===0?item.startStyle:''}}">
+              <view class="inner-item-label-view">{{_item.value}}</view>
+            </view>
+            <!-- 未禁用日期 -->
+            <view wx:elif="{{_item.show&&!_item.disabled}}" class="grid-item-view {{(_item.week===0||_item.week===6)?'color':''}} {{ _item.firstChecked?'first-checked':''}}  {{ _item.secondChecked?'second-checked':''}}  {{ _item.midChecked?'mid-checked':''}}" style="{{_index===0?item.startStyle:''}}"
+              hover-class="hover-class" hover-stay-time="200" @tap="tapDate({{index}},{{_index}})">
+              <view class="inner-item-label-view">{{_item.dateLabel?_item.dateLabel:_item.value}}</view>
+              <view wx:if="{{_item.firstChecked||_item.secondChecked}}" class="inner-item-warn-view">{{_item.firstChecked?'入住':'离店'}}</view>
+              <view wx:if="{{_item.secondChecked}}" class="inner-item-abs-tag-view">
+                <view class="item-tag-view">
+                  <text style="line-height:50rpx;">共{{getDays-1}}晚</text>
+                  <view class="item-tag-triangle-view"></view>
+                </view>
+              </view>
+            </view>
+          </repeat>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import { getSysWidth } from '../lib/wx-system.js';
+import { getMonth } from '../lib/utils.js';
+export default class date extends wepy.component {
+  components = {};
+  data = {
+    dateArray: [],
+    checkedArray: [],
+    tempIndex: []
+  };
+  watch = {};
+  props = {
+    value:{
+      type: Array,
+      default:[],
+      twoWay: true
+    },
+    months: {
+      type: String,
+      default: '2'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  };
+  computed = {
+    getWeeks(year, month, day = 1) {
+      return new Date(year, month - 1, day).getDay();
+    },
+    getDays() {
+      let days = 0;
+      if (this.tempIndex.length === 2) {
+        this.dateArray.forEach((item, index) => {
+          item.dateArray.forEach((_item, _index) => {
+            if (_item.firstChecked || _item.secondChecked || _item.midChecked) {
+              days++;
+            }
+          });
+        });
+      }
+      return days;
+    }
+  };
+  methods = {
+    preventTouchMove() {
+      console.warn('preventTouchMove方法已阻止其他事件。');
+    },
+    tapDate(index1, index2) {
+      // 首选
+      let temp = this.dateArray[index1].dateArray[index2];
+      this.dateArray.forEach((item, index) => {
+        item.dateArray.forEach((_item, _index) => {
+          if (this.checkedArray.length === 0) {
+            if (index1 === index && index2 === _index) {
+              temp.firstChecked = true;
+              this.checkedArray[0] = new Date(
+                item.year,
+                item.month - 1,
+                _item.value
+              ).toString('yyyy/MM/dd');
+              this.tempIndex[0] = {
+                index: index,
+                _index: _index
+              };
+              console.log(this.checkedArray[0]);
+            }
+            this.clearItem();
+          } else if (this.checkedArray.length === 1) {
+            let currentStamp = new Date(
+              item.year,
+              item.month - 1,
+              _item.value
+            ).valueOf();
+            let first = new Date(this.checkedArray[0]).valueOf();
+            if (
+              index1 === index &&
+              index2 === _index &&
+              !temp.firstChecked &&
+              currentStamp > first
+            ) {
+              temp.secondChecked = true;
+              this.checkedArray[1] = new Date(
+                item.year,
+                item.month - 1,
+                _item.value
+              ).toString('yyyy/MM/dd');
+              this.tempIndex[1] = {
+                index: index,
+                _index: _index
+              };
+            } else if (
+              index1 === index &&
+              index2 === _index &&
+              !temp.firstChecked &&
+              currentStamp < first
+            ) {
+              _item.firstChecked = true;
+              this.checkedArray.unshift(
+                new Date(item.year, item.month - 1, _item.value).toString(
+                  'yyyy/MM/dd'
+                )
+              );
+              this.tempIndex.unshift({
+                index: index,
+                _index: _index
+              });
+              this.dateArray[this.tempIndex[1].index].dateArray[
+                this.tempIndex[1]._index
+              ].firstChecked = false;
+              this.dateArray[this.tempIndex[1].index].dateArray[
+                this.tempIndex[1]._index
+              ].secondChecked = true;
+            }
+            this.clearItem();
+          } else if (this.checkedArray.length === 2) {
+            if (
+              index1 === index &&
+              index2 === _index &&
+              !temp.firstChecked &&
+              !temp.secondChecked
+            ) {
+              let currentStamp = new Date(
+                item.year,
+                item.month - 1,
+                _item.value
+              ).valueOf();
+              let first = new Date(this.checkedArray[0]).valueOf();
+              let second = new Date(this.checkedArray[1]).valueOf();
+              // 选择日期小于当前入住时间
+              if (currentStamp < first) {
+                // 存储日期
+                this.checkedArray[0] = new Date(
+                  item.year,
+                  item.month - 1,
+                  _item.value
+                ).toString('yyyy/MM/dd');
+                // 更改入住时间
+                this.dateArray[this.tempIndex[0].index].dateArray[
+                  this.tempIndex[0]._index
+                ].firstChecked = false;
+                temp.firstChecked = true;
+                // 更改下标
+                this.tempIndex[0] = {
+                  index: index,
+                  _index: _index
+                };
+              } else if (currentStamp > second) {
+                // 选择日期大于离店时间
+                this.checkedArray[1] = new Date(
+                  item.year,
+                  item.month - 1,
+                  _item.value
+                ).toString('yyyy/MM/dd');
+                this.dateArray[this.tempIndex[1].index].dateArray[
+                  this.tempIndex[1]._index
+                ].secondChecked = false;
+                temp.secondChecked = true;
+                this.tempIndex[1] = {
+                  index: index,
+                  _index: _index
+                };
+              } else if (first < currentStamp && currentStamp < second) {
+                // 选择日期在区间之内
+                temp.firstChecked = true;
+                this.dateArray[this.tempIndex[0].index].dateArray[
+                  this.tempIndex[0]._index
+                ].firstChecked = false;
+                this.dateArray[this.tempIndex[1].index].dateArray[
+                  this.tempIndex[1]._index
+                ].secondChecked = false;
+                this.checkedArray[0] = new Date(
+                  item.year,
+                  item.month - 1,
+                  _item.value
+                ).toString('yyyy/MM/dd');
+                this.tempIndex[0] = {
+                  index: index,
+                  _index: _index
+                };
+                this.checkedArray.splice(1, 1);
+                this.tempIndex.splice(1, 1);
+              }
+            } else if (
+              index1 === index &&
+              index2 === _index &&
+              temp.secondChecked
+            ) {
+              this.dateArray[this.tempIndex[0].index].dateArray[
+                this.tempIndex[0]._index
+              ].firstChecked = false;
+              temp.firstChecked = true;
+              temp.secondChecked = false;
+              this.checkedArray.splice(0, 1);
+              this.tempIndex.splice(0, 1);
+            }
+          }
+          this.clearItem();
+        });
+      });
+      this.getCheckedItem();
+      this.$emit('changeValue')
+    }
+  };
+  onLoad() {
+    // 当前时间戳
+    let currentTimeStamp = new Date(
+      new Date().toString('yyyy/MM/dd')
+    ).valueOf();
+    // 获取模块日期列表
+    this.dateArray = getMonth(this.months);
+    // 获取当前时间周几
+    let currentWeek = new Date().getDay();
+    // 设置本周日为最小的时间戳（根据日历的模块定义，当前日期一行的第一个为周日）
+    let smallTimeStamp = new Date(
+      new Date().getTime() - 24 * 60 * 60 * 1000 * currentWeek
+    ).valueOf();
+    this.dateArray.forEach(item => {
+      item.week = this.computed.getWeeks(item.year, item.month);
+      item.startStyle = `grid-column-start:${item.week + 1}`;
+      item.dateArray.forEach(_item => {
+        _item.week = this.computed.getWeeks(item.year, item.month, _item.value);
+        let timeStamp = new Date(
+          item.year,
+          item.month - 1,
+          _item.value
+        ).valueOf();
+        if (timeStamp === currentTimeStamp) {
+          _item.dateLabel = '今天';
+        } else if (timeStamp === currentTimeStamp + 24 * 60 * 60 * 1000 * 1) {
+          _item.dateLabel = '明天';
+        } else if (timeStamp === currentTimeStamp + 24 * 60 * 60 * 1000 * 2) {
+          _item.dateLabel = '后天';
+        }
+        _item.show = true;
+        // 禁用本日之前日期
+        if (!this.disabled) {
+          if (timeStamp < currentTimeStamp) {
+            _item.disabled = true;
+          } else {
+            _item.disabled = false;
+          }
+        } else {
+          if (timeStamp < smallTimeStamp) {
+            _item.show = false;
+          } else {
+            _item.show = true;
+            // 禁用本日之前日期
+            if (timeStamp < currentTimeStamp) {
+              _item.disabled = true;
+            } else {
+              _item.disabled = false;
+            }
+          }
+        }
+      });
+    });
+    this.getIndex()
+    this.tapDate(this.tempIndex[0].index,this.tempIndex[0]._index)
+    this.tapDate(this.tempIndex[1].index,this.tempIndex[1]._index)
+    this.$apply();
+  }
+  tapDate(index1, index2) {
+      // 首选
+      let temp = this.dateArray[index1].dateArray[index2];
+      this.dateArray.forEach((item, index) => {
+        item.dateArray.forEach((_item, _index) => {
+          if (this.checkedArray.length === 0) {
+            if (index1 === index && index2 === _index) {
+              temp.firstChecked = true;
+              this.checkedArray[0] = new Date(
+                item.year,
+                item.month - 1,
+                _item.value
+              ).toString('yyyy/MM/dd');
+              this.tempIndex[0] = {
+                index: index,
+                _index: _index
+              };
+            }
+            this.clearItem();
+          } else if (this.checkedArray.length === 1) {
+            let currentStamp = new Date(
+              item.year,
+              item.month - 1,
+              _item.value
+            ).valueOf();
+            let first = new Date(this.checkedArray[0]).valueOf();
+            if (
+              index1 === index &&
+              index2 === _index &&
+              !temp.firstChecked &&
+              currentStamp > first
+            ) {
+              temp.secondChecked = true;
+              this.checkedArray[1] = new Date(
+                item.year,
+                item.month - 1,
+                _item.value
+              ).toString('yyyy/MM/dd');
+              this.tempIndex[1] = {
+                index: index,
+                _index: _index
+              };
+            } else if (
+              index1 === index &&
+              index2 === _index &&
+              !temp.firstChecked &&
+              currentStamp < first
+            ) {
+              _item.firstChecked = true;
+              this.checkedArray.unshift(
+                new Date(item.year, item.month - 1, _item.value).toString(
+                  'yyyy/MM/dd'
+                )
+              );
+              this.tempIndex.unshift({
+                index: index,
+                _index: _index
+              });
+              this.dateArray[this.tempIndex[1].index].dateArray[
+                this.tempIndex[1]._index
+              ].firstChecked = false;
+              this.dateArray[this.tempIndex[1].index].dateArray[
+                this.tempIndex[1]._index
+              ].secondChecked = true;
+            }
+            this.clearItem();
+          } else if (this.checkedArray.length === 2) {
+            if (
+              index1 === index &&
+              index2 === _index &&
+              !temp.firstChecked &&
+              !temp.secondChecked
+            ) {
+              let currentStamp = new Date(
+                item.year,
+                item.month - 1,
+                _item.value
+              ).valueOf();
+              let first = new Date(this.checkedArray[0]).valueOf();
+              let second = new Date(this.checkedArray[1]).valueOf();
+              // 选择日期小于当前入住时间
+              if (currentStamp < first) {
+                // 存储日期
+                this.checkedArray[0] = new Date(
+                  item.year,
+                  item.month - 1,
+                  _item.value
+                ).toString('yyyy/MM/dd');
+                // 更改入住时间
+                this.dateArray[this.tempIndex[0].index].dateArray[
+                  this.tempIndex[0]._index
+                ].firstChecked = false;
+                temp.firstChecked = true;
+                // 更改下标
+                this.tempIndex[0] = {
+                  index: index,
+                  _index: _index
+                };
+              } else if (currentStamp > second) {
+                // 选择日期大于离店时间
+                this.checkedArray[1] = new Date(
+                  item.year,
+                  item.month - 1,
+                  _item.value
+                ).toString('yyyy/MM/dd');
+                this.dateArray[this.tempIndex[1].index].dateArray[
+                  this.tempIndex[1]._index
+                ].secondChecked = false;
+                temp.secondChecked = true;
+                this.tempIndex[1] = {
+                  index: index,
+                  _index: _index
+                };
+              } else if (first < currentStamp && currentStamp < second) {
+                // 选择日期在区间之内
+                temp.firstChecked = true;
+                this.dateArray[this.tempIndex[0].index].dateArray[
+                  this.tempIndex[0]._index
+                ].firstChecked = false;
+                this.dateArray[this.tempIndex[1].index].dateArray[
+                  this.tempIndex[1]._index
+                ].secondChecked = false;
+                this.checkedArray[0] = new Date(
+                  item.year,
+                  item.month - 1,
+                  _item.value
+                ).toString('yyyy/MM/dd');
+                this.tempIndex[0] = {
+                  index: index,
+                  _index: _index
+                };
+                this.checkedArray.splice(1, 1);
+                this.tempIndex.splice(1, 1);
+              }
+            } else if (
+              index1 === index &&
+              index2 === _index &&
+              temp.secondChecked
+            ) {
+              this.dateArray[this.tempIndex[0].index].dateArray[
+                this.tempIndex[0]._index
+              ].firstChecked = false;
+              temp.firstChecked = true;
+              temp.secondChecked = false;
+              this.checkedArray.splice(0, 1);
+              this.tempIndex.splice(0, 1);
+            }
+          }
+          this.clearItem();
+        });
+      });
+      this.getCheckedItem();
+    }
+  getCheckedItem() {
+    if (this.checkedArray.length === 2) {
+      let first = new Date(this.checkedArray[0]).valueOf();
+      let second = new Date(this.checkedArray[1]).valueOf();
+      this.dateArray.forEach(item => {
+        item.dateArray.forEach(_item => {
+          let currentStamp = new Date(
+            item.year,
+            item.month - 1,
+            _item.value
+          ).valueOf();
+          if (first < currentStamp && currentStamp < second) {
+            _item.midChecked = true;
+          }
+        });
+      });
+    }
+  }
+  clearItem() {
+    this.dateArray.forEach(item => {
+      item.dateArray.forEach(_item => {
+        _item.midChecked = false;
+      });
+    });
+  }
+  getIndex(){
+    if(this.value.length>0){
+      let firstDate =  new Date(this.value[0])
+      let fyear = firstDate.getFullYear()
+      let fmonth = firstDate.getMonth() + 1
+      let fdate  =  firstDate.getDate()
+      let endDate =  new Date(this.value[1])
+      let eyear = endDate.getFullYear()
+      let emonth = endDate.getMonth() + 1
+      let edate  =  endDate.getDate()
+      this.dateArray.forEach((item,index) => {
+        item.dateArray.forEach((_item,_index) => {
+          if(fyear===item.year && fmonth === item.month && fdate ===_item.value){
+           this.tempIndex[0]={index:index,_index:_index}
+          }
+          if(eyear===item.year&& emonth === item.month && edate ===_item.value){
+           this.tempIndex[1]={index:index,_index:_index}
+          }
+        });
+      });
+    }
+  }
+  events = {
+    changeValue(){
+      this.value = this.checkedArray
+    }
+  };
+}
+</script>

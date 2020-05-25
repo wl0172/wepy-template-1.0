@@ -1,0 +1,30 @@
+<style lang="less">
+</style>
+
+
+<template>
+  <view class="body">
+
+
+
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class Login extends wepy.page {
+  config = {
+    navigationBarTitleText: '登录',
+    disableScroll: true
+  };
+  components = {};
+  data = {};
+  computed = {};
+  watch = {};
+  onLoad() {}
+  onShow() {}
+  methods = {};
+  onHide() {}
+  onUnload() {}
+}
+</script>
